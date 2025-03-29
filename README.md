@@ -1,20 +1,21 @@
 # Merlinil põhinevad eesti keele kõnesüntesaatorid üksiksõnadele ja lausetele
 
 süntesaatorid arvestavad tekstis foneetilisi märke: 
+
 '<' - kolmandavälteline silp, ']' - palatalisatsioon, '?' - rõhuline silp, '_' - liitsõnapiir
 
-==============================================================================
+===========================================================================
 
       Merlin: The Neural Network (NN) based Speech Synthesis System
               https://github.com/CSTR-Edinburgh/merlin
 
-==============================================================================
+===========================================================================
 
              Morfoloogiline analüsaator ja ühestaja                
                  Copyright (c) 2015, Filosoft                      
               https://github.com/Filosoft/vabamorf                 
 
-==============================================================================
+===========================================================================
 ## INSTALL
 
 - välised sõltuvused
@@ -45,6 +46,6 @@ vaata näidet failis `mrln.sh`
 
 - Sünteeshääled  on `voices/` kataloogis
 
-efm_s sünteesib üksiksõnu
+`efm_s` - sünteesib üksiksõnu
  
-efm_s sünteesib lauseid
+`efm_s` - sünteesib lauseid
