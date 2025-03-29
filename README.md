@@ -1,7 +1,7 @@
 # Merlinil põhinevad eesti keele kõnesüntesaatorid üksiksõnadele ja lausetele
 
-# süntesaatorid arvestavad foneetilisi märke: 
-# '<' - kolmandavälteline silp, ']' - palatalisatsioon, '?' - rõhuline silp, '_' - liitsõnapiir
+süntesaatorid arvestavad tekstis foneetilisi märke: 
+'<' - kolmandavälteline silp, ']' - palatalisatsioon, '?' - rõhuline silp, '_' - liitsõnapiir
 
 ==============================================================================
 
@@ -37,7 +37,7 @@ conda env create -f mrln_et.yml
 conda activate mrln_et
 ```
 
-- süntees
+## SÜNTEES
 ```sh
 python ${merlin_dir}/src/run_merlin.py ${merlin_dir} ${temp_dir} ${voice} ${in_text} ${out_wav}
 ```
