@@ -405,7 +405,7 @@ CFSClassArray<TWord> TUtterance::DoTokens(CFSClassArray<TWord> TWA) {
                     //Printer P;
                     //P.prnn(TWA[i].TWMInfo.m_szRoot);
                     
-                    TWA[i].TWMInfo.m_szRoot.Replace(L"?", L"<", 1);
+//                    TWA[i].TWMInfo.m_szRoot.Replace(L"?", L"<", 1);
                     TWA[i].TWMInfo.m_szRoot.Replace(L"=", L"", 1);
                     //P.prnn(TWA[i].TWMInfo.m_szRoot);
                     
