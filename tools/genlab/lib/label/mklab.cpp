@@ -878,7 +878,8 @@ CFSArray<CFSWString> do_all(CFSWString utt, bool print_label, bool print_utt) {
                 
                 CFSWString res = L"";
               	INTPTR l = TempA[i].GetLength();
-                
+
+                /*
                 if (is_palat(TempA[i])) res = TempA[i];
                     else
                 for (INTPTR j = 0; j < l; j++) {
@@ -893,12 +894,13 @@ CFSArray<CFSWString> do_all(CFSWString utt, bool print_label, bool print_utt) {
                         else res += c;
                 }
                 TW.TWMInfo.m_szRoot = res;
+*/
+                TW.TWMInfo.m_szRoot = TempA[i];
+                TW.Token = TempA[i];
                 P.prnn(L"\t" + res);
                 
                 
-                
-                
-                
+
                 //TW.TWMInfo.m_szRoot = TempA[i];
                 //P.prnn(TW.TWMInfo.m_szRoot);
                 
