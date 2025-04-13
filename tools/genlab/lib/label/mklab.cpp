@@ -11,17 +11,19 @@ Printer P;
 
 CFSWString DealWithText(CFSWString text) {
 	/* Proovin kogu sõnniku minema loopida */
-    
-    
+
 	CFSWString res;
 	text.Trim();
         CFSWString x = text;
+
+//        P.prnn(L"\tDWT-a" + x);
+
         text.Replace(L"\n\n", L"\n", 1);
 	for (INTPTR i = 0; i < text.GetLength(); i++) {
 		CFSWString c = text.GetAt(i);
 		CFSWString pc = res.GetAt(res.GetLength() - 1);
 		CFSWString nc = text.GetAt(i + 1);
-		
+
                 if (is_char(c)) res += c;
 		else
 			if (is_digit(c)) res += c;
@@ -53,13 +55,14 @@ CFSWString DealWithText(CFSWString text) {
 		else
 			if (is_tab(c) && !is_whitespace(pc)) res += c;
 		else
-			if (is_ending(c) && !is_ending(pc) && !is_whitespace(pc)) res += c;
+			if (is_ending(c) && !is_ending(pc)) res += c;
 
-	
         }
-	
+
         res.Trim();
-        
+
+//        P.prnn(L"\tDWT-l" + res);
+
 	return res;
 
 }
@@ -69,6 +72,8 @@ CFSArray<CFSWString> do_utterances(CFSWString s) {
 
 	CFSWString res = empty_str;
 	CFSArray<CFSWString> res_array;
+
+//         P.prnn(L"\t>>>>" + s);
 
 	if (s.GetLength() == 1)
 		res_array.AddItem(s);
@@ -109,16 +114,19 @@ CFSArray<CFSWString> do_utterances(CFSWString s) {
 			res_array[i].Delete(res_array[i].GetLength() - 1, 1);
 
 	} */
-        //for (INTPTR i = 0; i < res_array.GetSize(); i++) {
-          //P.prnn(res_array[i]);
-        //}
+//        for (INTPTR i = 0; i < res_array.GetSize(); i++) {
+//          P.prnn(res_array[i]);
+//        }
+
 	return res_array;
 }
 
-CFSWString PrepareTokenss(CFSWString s) {
+CFSWString PrepareTokens(CFSWString s) {
     CFSWString res;
     INTPTR first = 0;
     INTPTR last = s.GetLength() - 1;
+
+//    P.prnn(L"\tPT-a" + s);
 
     for (INTPTR i = 0; i < s.GetLength(); i++) {
         CFSWString c = s.GetAt(i);
@@ -165,11 +173,11 @@ CFSWString PrepareTokenss(CFSWString s) {
     s.Replace(L"  ", L" ", 1);
     s.Replace(L"  ", L" ", 1);
     s.Replace(L"  ", L" ", 1);
-    
-    
-    
+
+//   P.prnn(L"\tPT-l" + s);
+
     return s;
-    
+
 }
 
 
@@ -277,8 +285,10 @@ CFSClassArray<TWord> TUtterance::DoNumbers(CFSClassArray<TWord> TWA) {
 
 	for (INTPTR i = 0; i < TWA.GetSize(); i++) {
 		// POS peab olema N või O
-		if (TWA[i].TWMInfo.m_cPOS == 'N' || TWA[i].TWMInfo.m_cPOS == 'O') {
 
+		CFSWString Token = TWA[i].Token;
+
+		if (TWA[i].TWMInfo.m_cPOS == 'N' || TWA[i].TWMInfo.m_cPOS == 'O') {
 
 
 			bool Ordinal;
@@ -354,7 +364,9 @@ CFSClassArray<TWord> TUtterance::DoNumbers(CFSClassArray<TWord> TWA) {
 				CFSWString s = IntToStr(TWA[i].Token, Ordinal, 1, true);
 				AddNumber(s, Result, TWA[i]);
 			}
-		} else // ei ole number
+		}
+
+                else // ei ole number
 		{
 			Result.AddItem(TWA[i]);
 		}
@@ -372,7 +384,6 @@ CFSClassArray<TWord> TUtterance::DoTokens(CFSClassArray<TWord> TWA) {
 	TWord TW;
 	CFSClassArray<TTypeRecord> TRecA;
 	CFSArray<CFSWString> PrevNumber;
-
 
 
 	for (INTPTR i = 0; i < TWA.GetSize(); i++) {
@@ -398,22 +409,22 @@ CFSClassArray<TWord> TUtterance::DoTokens(CFSClassArray<TWord> TWA) {
 		if (is_conju(TWA[i].TWMInfo.m_szRoot))
 			TWA[i].PhrBreakAfter = 1;
 
-                
+
                 // AINULT ÜKSIKSÕNADE JAOKS
-                if (true) {
-                    
+
+                if (true) {    // Indreku kummaline if-else konstruktsioon
+
                     //Printer P;
                     //P.prnn(TWA[i].TWMInfo.m_szRoot);
-                    
-//                    TWA[i].TWMInfo.m_szRoot.Replace(L"?", L"<", 1);
+
+//                  TWA[i].TWMInfo.m_szRoot.Replace(L"?", L"<", 1);   // teisendus ? -> < sai välja jäetud
+
                     TWA[i].TWMInfo.m_szRoot.Replace(L"=", L"", 1);
-                    //P.prnn(TWA[i].TWMInfo.m_szRoot);
-                    
                     Result.AddItem(TWA[i]);
+
                 }
                 else
-                
-                
+
 
 		// 1 TINGIMUS
 		if (i < (TWA.GetSize() - 1) && IsOKNumber(TWA[i]) &&
@@ -505,7 +516,7 @@ CFSClassArray<TWord> TUtterance::DoTokens(CFSClassArray<TWord> TWA) {
 			}
 
 		} else
-			// 5 TINGIMUS				
+			// 5 TINGIMUS
 			if (TWA[i].TWMInfo.m_cPOS == 'N' && IsNumberWithSeparator(TWA[i].Token, L",")) {
 
 			Temp.Cleanup();
@@ -559,7 +570,7 @@ CFSClassArray<TWord> TUtterance::DoTokens(CFSClassArray<TWord> TWA) {
 			// Kui on midagi perses, kahtlusta tingimuse 2. poolt
 			// 7 TINGIMUS
 			if (TWA[i].TWMInfo.m_cPOS < 'Y' && is_word(TWA[i].Token)) {
-			//et "kaks" ei läheks numbritesse          
+			//et "kaks" ei läheks numbritesse
 			if (TWA[i].TWMInfo.m_cPOS == L'N') TWA[i].TWMInfo.m_cPOS = L'S';
 			Result.AddItem(TWA[i]);
 
@@ -689,7 +700,7 @@ CFSClassArray<TWord> TUtterance::DoTokens(CFSClassArray<TWord> TWA) {
 				TW.Token = TRecA[2].s;
 				Result.AddItem(TW);
 
-			}				
+			}
 				/*ERIJUHTUDE LÕPP*/
 			else
 				for (INTPTR j = 0; j < TRecA.GetSize(); j++) {
@@ -762,7 +773,7 @@ CFSClassArray<TWord> TUtterance::DoTokens(CFSClassArray<TWord> TWA) {
 
 						if (is_ebracket(TRecA[j].s) && Result.GetSize() > 0) { //lõpetav
 							//Result[Result.GetSize() - 1].PhrBreakAfter = 2;
-                                                     
+
                                                     //TWA[i+2].PhrBreakAfter = 2;
 						}
 					}
@@ -837,17 +848,14 @@ CFSArray<CFSWString> do_all(CFSWString utt, bool print_label, bool print_utt) {
 	CFSArray<CFSWString> res, TempA;
 	CFSArray<CPTWord> PTW;
 	TUtterance TU;
-        
-        //P.prnn(utt);
-        
-//        if (utt.GetLength() > 1) 
-//               utt = PrepareTokens(utt);
-        
-        //P.prnn(utt);
+
+//        P.prnn(L"\t> " + utt);
+
 	explode(utt, L" ", TempA);
 
 	for (INTPTR i = 0; i < TempA.GetSize(); i++) {
 		PTW.AddItem(TempA[i]);
+//                P.prnn(L"\t: " + TempA[i]);
 	}
 
 	CFSArray<CMorphInfos> MRs = Disambiguator.Disambiguate(Linguistic.AnalyzeSentense(PTW));
@@ -859,63 +867,40 @@ CFSArray<CFSWString> do_all(CFSWString utt, bool print_label, bool print_utt) {
 	for (INTPTR i = 0; i < MRs.GetSize(); i++) {
 		TWord TW;
 		TW.Token = MRs[i].m_szWord;
-		
+
                 CFSWString pc = TW.Token.GetAt(TW.Token.GetLength() - 1);
+
                 if (is_ending(pc) && i == MRs.GetSize()-1) {
                     if (pc == L"?") UttType = 3;
-                        else
+                    else
                     if (pc == L"!") UttType = 2;
-                        else
+                    else
                     UttType = 1;
-                    //P.prnn(pc);
                     TW.Token.Delete(TW.Token.GetLength() - 1, 1);
+//                    TW.TWMInfo.m_szRoot = TW.Token;
                 }
-                
-                
+
                 TW.TWMInfo = MRs[i].m_MorphInfo[0];
 		TW.AddEndings();
-                //P.prnn(TempA[i]);
-                
-                CFSWString res = L"";
-              	INTPTR l = TempA[i].GetLength();
 
-                /*
-                if (is_palat(TempA[i])) res = TempA[i];
-                    else
-                for (INTPTR j = 0; j < l; j++) {
-                    CFSWString c = TempA[i].GetAt(j);
-                    
-                    if (j == 0) res +=  c;
-                        else
-                    if (c == 'i' || c == 'j') {
-                        if (has_palat(TempA[i].GetAt(j-1))) res += L"]";
-                        res += c;
-                    }
-                        else res += c;
-                }
-                TW.TWMInfo.m_szRoot = res;
-*/
-                TW.TWMInfo.m_szRoot = TempA[i];
-                TW.Token = TempA[i];
-                P.prnn(L"\t" + res);
-                
-                
+//                P.prnn(L"\t" + res)
 
                 //TW.TWMInfo.m_szRoot = TempA[i];
                 //P.prnn(TW.TWMInfo.m_szRoot);
-                
+
 		TU.TWA.AddItem(TW);
-                
-                for (int j = 0; j < MRs[i].m_MorphInfo.GetSize(); j ++) {
-                   //P.prnn(L"\t> " + MRs[i].m_MorphInfo[j].m_szRoot +MRs[i].m_MorphInfo[j].m_szEnding);
-                    
+
+                for (int j = 0; j < MRs[i].m_MorphInfo.GetSize(); j++) {
+                    if (MRs[i].m_MorphInfo[j].m_szEnding == L"0") {
+                        MRs[i].m_MorphInfo[j].m_szEnding = L"";
+                    }
+//                    P.prnn(L"\t> " + MRs[i].m_MorphInfo[j].m_szRoot + MRs[i].m_MorphInfo[j].m_szEnding);
+
                    //P.prnn(MRs[i].m_szWord);
                 }
-                
-                
+
 	}
-        
-        
+
         TU.UttT = UttType;
 	TU.AnalyzeText();
         TU.Syllabify();
@@ -923,14 +908,13 @@ CFSArray<CFSWString> do_all(CFSWString utt, bool print_label, bool print_utt) {
 	TU.Calculate();
         TU.PhoneArray();
 
-        
+
         for (INTPTR i = 0; i < TU.TPA.GetSize(); i++) {
 		res.AddItem(TU.TPA[i].Phone);
 		//P.prnn(TU.TPA[i].Phone);
-                
-                
 
-	}        
+	}
+
 	return res;
 }
 
