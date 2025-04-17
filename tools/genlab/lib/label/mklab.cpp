@@ -849,20 +849,19 @@ CFSArray<CFSWString> do_all(CFSWString utt, bool print_label, bool print_utt) {
 	CFSArray<CPTWord> PTW;
 	TUtterance TU;
 
-//        P.prnn(L"\t> " + utt);
+        P.prnn(L"\t> " + utt);
 
 	explode(utt, L" ", TempA);
 
 	for (INTPTR i = 0; i < TempA.GetSize(); i++) {
 		PTW.AddItem(TempA[i]);
-//                P.prnn(L"\t: " + TempA[i]);
+//                P.prnn(L"\tA: " + TempA[i]);
 	}
 
 	CFSArray<CMorphInfos> MRs = Disambiguator.Disambiguate(Linguistic.AnalyzeSentense(PTW));
 
 //        P.prnn();
-        
-        
+
         INTPTR UttType = 1;
 	for (INTPTR i = 0; i < MRs.GetSize(); i++) {
 		TWord TW;
@@ -877,16 +876,14 @@ CFSArray<CFSWString> do_all(CFSWString utt, bool print_label, bool print_utt) {
                     else
                     UttType = 1;
                     TW.Token.Delete(TW.Token.GetLength() - 1, 1);
-//                    TW.TWMInfo.m_szRoot = TW.Token;
+                    TempA[i] = TW.Token;
                 }
 
                 TW.TWMInfo = MRs[i].m_MorphInfo[0];
 		TW.AddEndings();
 
-//                P.prnn(L"\t" + res)
-
-                //TW.TWMInfo.m_szRoot = TempA[i];
-                //P.prnn(TW.TWMInfo.m_szRoot);
+                TW.TWMInfo.m_szRoot = TempA[i];
+                TW.Token = TempA[i];
 
 		TU.TWA.AddItem(TW);
 
