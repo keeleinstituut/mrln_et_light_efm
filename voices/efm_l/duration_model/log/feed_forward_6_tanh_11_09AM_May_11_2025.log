@@ -1,0 +1,35 @@
+2025-05-11 11:09:57,892     INFO           main: Installation information:
+2025-05-11 11:09:57,893     INFO           main:   Merlin directory: /home/meelis/merlin
+2025-05-11 11:09:57,893     INFO           main:   PATH:
+2025-05-11 11:09:57,893     INFO           main:       /home/meelis/anaconda3/envs/mrln_et/lib
+2025-05-11 11:09:57,893     INFO           main:       /home/meelis/anaconda3/envs/mrln_et/bin
+2025-05-11 11:09:57,893     INFO           main:       /home/meelis/anaconda3/condabin
+2025-05-11 11:09:57,893     INFO           main:       /usr/local/sbin
+2025-05-11 11:09:57,893     INFO           main:       /usr/local/bin
+2025-05-11 11:09:57,893     INFO           main:       /usr/sbin
+2025-05-11 11:09:57,893     INFO           main:       /usr/bin
+2025-05-11 11:09:57,893     INFO           main:       /sbin
+2025-05-11 11:09:57,893     INFO           main:       /bin
+2025-05-11 11:09:57,893     INFO           main:       /usr/games
+2025-05-11 11:09:57,893     INFO           main:       /usr/local/games
+2025-05-11 11:09:57,893     INFO           main:       /snap/bin
+2025-05-11 11:09:57,893     INFO           main:   LD_LIBRARY_PATH:
+2025-05-11 11:09:57,893     INFO           main:   Python version: 3.6.8 |Anaconda, Inc.| (default, Dec 30 2018, 01:22:34) [GCC 7.3.0]
+2025-05-11 11:09:57,893     INFO           main:     PYTHONPATH:
+2025-05-11 11:09:57,893     INFO           main:   Numpy version: 1.19.5
+2025-05-11 11:09:57,893     INFO           main:   Theano version: 1.0.5
+2025-05-11 11:09:57,893     INFO           main:     THEANO_FLAGS: device=cuda,floatX=float32,on_unused_input=ignore
+2025-05-11 11:09:57,894     INFO           main:     device: cuda
+2025-05-11 11:09:57,900     INFO           main: Execution information:
+2025-05-11 11:09:57,925     INFO           main:   HOSTNAME: fu.eki.ee
+2025-05-11 11:09:57,926     INFO           main:   USER: meelis
+2025-05-11 11:09:57,926     INFO           main:   PID: 24572
+2025-05-11 11:09:57,953     INFO           main: Input label dimension is 360
+2025-05-11 11:09:57,955     INFO           main: preparing label data (input) using standard HTS style labels
+2025-05-11 11:09:57,957     INFO         labels: loaded /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/prompt-lab/temp00.lab,  42 labels
+2025-05-11 11:09:58,161     INFO  acoustic_norm: Loaded min max values from the trained data for feature dimension of 360
+2025-05-11 11:09:58,180     INFO           main: label dimension is 360
+2025-05-11 11:09:58,180     INFO           main: generating from DNN
+2025-05-11 11:09:58,215     INFO dnn_generation: generating    1 of    1: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/gen-lab/temp00.lab
+2025-05-11 11:09:59,274     INFOparam_generation: processing    1 of    1: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/gen-lab/temp00.cmp
+2025-05-11 11:09:59,275     INFO            dur: loaded /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/prompt-lab/temp00.lab,  42 labels

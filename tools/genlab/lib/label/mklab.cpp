@@ -287,6 +287,7 @@ CFSClassArray<TWord> TUtterance::DoNumbers(CFSClassArray<TWord> TWA) {
 		// POS peab olema N või O
 
 		CFSWString Token = TWA[i].Token;
+//                P.prnn(L"\tDN_alg: " + Token);
 
 		if (TWA[i].TWMInfo.m_cPOS == 'N' || TWA[i].TWMInfo.m_cPOS == 'O') {
 
@@ -370,6 +371,7 @@ CFSClassArray<TWord> TUtterance::DoNumbers(CFSClassArray<TWord> TWA) {
 		{
 			Result.AddItem(TWA[i]);
 		}
+ //       P.prnn(L"\tDN_lopp: " + TWA[i].Token);
 
 	}
 	return Result;
@@ -389,6 +391,8 @@ CFSClassArray<TWord> TUtterance::DoTokens(CFSClassArray<TWord> TWA) {
 	for (INTPTR i = 0; i < TWA.GetSize(); i++) {
 
 		CFSWString Token = TWA[i].Token;
+//                P.prnn(L"\tDT_alg: " + Token);
+
 		// Komad ära ja fraasibreigid paika.
 		if ((is_comma(Token.GetAt(Token.GetLength() - 1)) ||
 			is_colon(Token.GetAt(Token.GetLength() - 1)) ||
@@ -421,9 +425,11 @@ CFSClassArray<TWord> TUtterance::DoTokens(CFSClassArray<TWord> TWA) {
 
                     TWA[i].TWMInfo.m_szRoot.Replace(L"=", L"", 1);
                     Result.AddItem(TWA[i]);
+//                    P.prnn(L"\tDT_kesk: " + TWA[i].Token);
 
                 }
-                else
+
+                else {   // see peaks järgneva numbrite, märkide ja lühendite töötluse välja jätma
 
 
 		// 1 TINGIMUS
@@ -778,6 +784,7 @@ CFSClassArray<TWord> TUtterance::DoTokens(CFSClassArray<TWord> TWA) {
 						}
 					}
 				}
+                        }   // väljajätva else'i lõpp
 		}
 	}
 	return Result;
@@ -824,10 +831,6 @@ void TSyl::DoPhones(TSyl &T) {
 			if (c == L'ä') c = L"ae";
 			if (c == L'ö') c = L"oe";
 			if (c == L'ü') c = L"ue";
-                //if (c == L'g') c = L"k";
-                //if (c == L'b') c = L"p";
-                //if (c == L'd') c = L"t";
-                
 
 			P.Phone = c;
 			P.p6 = i + 1;
@@ -847,6 +850,8 @@ void TSyl::DoPhones(TSyl &T) {
 CFSArray<CFSWString> do_all(CFSWString utt, bool print_label, bool print_utt) {
 	CFSArray<CFSWString> res, TempA;
 	CFSArray<CPTWord> PTW;
+        CFSWString c, pc, rs;
+        INTPTR l;
 	TUtterance TU;
 
         P.prnn(L"\t> " + utt);
@@ -854,8 +859,17 @@ CFSArray<CFSWString> do_all(CFSWString utt, bool print_label, bool print_utt) {
 	explode(utt, L" ", TempA);
 
 	for (INTPTR i = 0; i < TempA.GetSize(); i++) {
-		PTW.AddItem(TempA[i]);
-//                P.prnn(L"\tA: " + TempA[i]);
+
+		rs = L"";
+                l = TempA[i].GetLength();
+                for (INTPTR j = 0; j < l; j++) {
+                    c = TempA[i].GetAt(j);
+                    if (c == '?' || c == '<' || c == ']') continue;
+                    else rs += c;
+                }
+
+                PTW.AddItem(rs);
+//                P.prnn(L"\tA: " + rs);
 	}
 
 	CFSArray<CMorphInfos> MRs = Disambiguator.Disambiguate(Linguistic.AnalyzeSentense(PTW));
@@ -863,11 +877,11 @@ CFSArray<CFSWString> do_all(CFSWString utt, bool print_label, bool print_utt) {
 //        P.prnn();
 
         INTPTR UttType = 1;
-	for (INTPTR i = 0; i < MRs.GetSize(); i++) {
+	for (INTPTR i = 0; i < TempA.GetSize(); i++) {
 		TWord TW;
-		TW.Token = MRs[i].m_szWord;
+		TW.Token = TempA[i];
 
-                CFSWString pc = TW.Token.GetAt(TW.Token.GetLength() - 1);
+                pc = TW.Token.GetAt(TW.Token.GetLength() - 1);
 
                 if (is_ending(pc) && i == MRs.GetSize()-1) {
                     if (pc == L"?") UttType = 3;
@@ -891,9 +905,9 @@ CFSArray<CFSWString> do_all(CFSWString utt, bool print_label, bool print_utt) {
                     if (MRs[i].m_MorphInfo[j].m_szEnding == L"0") {
                         MRs[i].m_MorphInfo[j].m_szEnding = L"";
                     }
-//                    P.prnn(L"\t> " + MRs[i].m_MorphInfo[j].m_szRoot + MRs[i].m_MorphInfo[j].m_szEnding);
+//                    P.prnn(L"\tMorfo: " + MRs[i].m_MorphInfo[j].m_szRoot + MRs[i].m_MorphInfo[j].m_szEnding);
 
-                   //P.prnn(MRs[i].m_szWord);
+//                   P.prnn(MRs[i].m_szWord);
                 }
 
 	}

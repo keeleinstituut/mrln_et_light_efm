@@ -83,6 +83,15 @@ bool is_vokaal(CFSWString c) {
     return false;
 }
 
+bool js_dift(CFSWString e, CFSWString c) {
+    // järgsilpides võõrapäraste diftongide: ia, ie, io, iu, ea, eo, eu, ua, ue, uo, üa, üo tuvastus
+    if (e == L'i' && (c == L'a' || c == L'e' || c == L'o' || c == L'u')) return true;
+    if (e == L'e' && (c == L'a' || c == L'o' || c == L'u')) return true;
+    if (e == L'u' && (c == L'a' || c == L'e' || c == L'o')) return true;
+    if (e == L'ü' && (c == L'a' || c == L'o')) return true;
+    return false;
+}
+
 INTPTR pattern_lookup(CFSWString s) {
     // üldistus: kõik neljased reeglid v.a VLCL (k<indla, j<ärgmine), mis algavad VL-iga on 3, s.h lONKS
     INTPTR res = 3;
@@ -146,9 +155,9 @@ CFSWString sona_foneetiliseks(CFSWString &s) {
     // ] (palataliseeri), ? (rõhuta) ja < (vältesta) jäävad
     // etapiti, sest varem ei saanud kirjutada näiteks "lic]", sest võrreldi c-d, mitte ts-i
 
-    CFSWString res;
+    CFSWString kys, res;
 
-    CFSWString kys = s.GetAt(s.GetLength() - 1);
+    kys = s.GetAt(s.GetLength() - 1);
     if (kys == L"?") s.Delete(s.GetLength() - 1, 1);
 
 //    wprintf(L"\nsona foneetiliseks\n");
@@ -181,7 +190,7 @@ CFSWString sona_foneetiliseks(CFSWString &s) {
                 res += L"k";
         } else
             // müüa -> müia
-            if (c == L'ü' && is_vowel(s.GetAt(i + 1)) && s.GetAt(i - 1) == L'ü') res += L"i";
+            if (c == L'ü' && (is_vowel(s.GetAt(i + 1)) || s.GetAt(i + 1) == L'j') && s.GetAt(i - 1) == L'ü') res += L"i";
         else
             if (c == L'q') {
             // kv kontroll karmimaks kui enne (lihtsalt vokaal oleks viga Quran -> kvran ja Coqi -> kokv puhul)
@@ -221,6 +230,32 @@ CFSWString sona_palataliseeri(CFSWString s) {
                 } else break;
             }
         } else res += c;
+    }
+    return res;
+}
+
+CFSWString pikad_foneemid(CFSWString s) {
+    // mõnede pikkade foneemide: b:, d:, f:, j:, š:, v: 
+    // teisendus b: = b, d: = d, f: = ff, j: = i:, š: = šš, v: = vv
+
+    CFSWString res;
+    CFSWString c, p;
+
+    for (INTPTR i = 0; i < s.GetLength(); i++) {
+        c = s.GetAt(i);
+        if (c == L'j' && s.GetAt(i+1) == L':') {  // j:
+            res += L'i';
+            continue;
+        }
+        if (c == L':') {
+            p = s.GetAt(i-1);
+            if (p == L'b' || p == L'D' || p == L'd') continue;  // b:, d:
+            if (p == L'f' || p == L'š' || p == L'v') {  // f:, š:, v:
+                res += p;
+                continue;
+            }
+        }
+        res += c;
     }
     return res;
 }
@@ -373,50 +408,69 @@ CFSWString sona_valtesta(CFSWString s) {
 CFSWString sona_silbita(CFSWString s) {
     // lisame kriipse silbivahedesse (NB < ja ? on endiselt sees ja jäägu, lisaks ka :)
 
+    CFSWString c, ees, res, taga;
     bool ij = false;
-    CFSWString res = s.GetAt(0);
+    bool js = false;
+
+    res = s.GetAt(0);
     // hi: alustame ühest, esimese tähe ette niikuinii silbipiiri ei tule
     for (INTPTR i = 1; i < s.GetLength(); i++) {
-        CFSWString ees = s.GetAt(i - 1);
+        ees = s.GetAt(i - 1);
         if (ees == L':') ees = s.GetAt(i - 2);
-        CFSWString c = s.GetAt(i);
-        CFSWString taga = s.GetAt(i + 1);
+        c = s.GetAt(i);
+        taga = s.GetAt(i + 1);
         if (taga == L':') taga = s.GetAt(i + 2);
 
         if (is_consonant(c)) {
             // ka-na, aka-d<eemia, ra-k?eti
-            if (is_vowel(ees) && (is_vowel(taga) || taga == L'<' || taga == '?'))
-                res += d;
+            if (is_vowel(ees) && (is_vowel(taga) || taga == L'<' || taga == '?')) {res += d; js = true;}
             // tup-rub, ap-l<omb, aga mitte p-raak
-            if ((is_consonant(ees) && (is_vowel(taga) || taga == L'<' || taga == '?')) && has_vowel(res))
-                res += d;
+            if ((is_consonant(ees) && (is_vowel(taga) || taga == L'<' || taga == '?')) && has_vowel(res)) {res += d; js = true;}
         }// siia peaks ehk diftongireegleid lisama
             // teeme praegu kolmesed nii, et V-VV siis kui tagumised on samad, muidu VV-V
-        else if (is_vowel(ees) && is_vowel(c) && is_vowel(taga)) {
-            if (c.ToLower() == taga && ij == false) {
-                res += d; // i-ooni, i-Oon, mei-jOos (ij)
-            } else if (ees.ToLower() == L'ü' && c == L'ü') {
-                res += L"i-j"; // püüe
-                ij = true;
-                continue;
-            } else if (c == L'i') {
-                res += L"i-j"; // saia, sAia
-                ij = true;
-                continue;
+        else {
+            if (is_vowel(ees) && is_vowel(c) && is_vowel(taga)) {
+                if (c.ToLower() == taga && ij == false) res += d; // i-ooni, i-Oon, mei-jOos (ij)
+                else {
+                    if (ees.ToLower() == L'ü' && c == L'ü') {
+                        res += L"i-j"; // püüe
+                        ij = true;
+                        js = true;
+                        continue;
+                    }
+                    else {
+                        if (c == L'i') {
+                        ij = true;
+                        js = true;
+                        if (s.GetAt(i+1) == L':') res += L"i:-j"; // sii:a -> sii:-ja 
+                        else res += L"i-j"; // saia, sAia
+                        continue;
+                        }
+                    }
+                }
             }
-        } else if (is_vowel(ees) && is_vowel(c)) ij = false;
-        else if ((c == L'<' || c == L'?') && is_vowel(ees))
-            res += d;
+            else {
+                if (is_vowel(ees) && is_vowel(c)) {
+                    ij = false;
+                    if (js && js_dift(ees, c)) res += d; // järgsilbis on võõrapärane diftong
+                }
+                else if ((c == L'<' || c == L'?') && is_vowel(ees)) {res += d; js = true;}
+            }
+        }
+        if (c == L':' && ij == true) continue;
         res += c;
     }
     return res;
 }
 
 bool is_stressed_syl(CFSWString syl) {
+    CFSWString c, n;
+
     bool res = false;
-    for (INTPTR i = 0; i < syl.GetLength(); i++) {
-        if ((syl.GetAt(i) == L'<') || (syl.GetAt(i) == L'?') || ((is_vowel(syl.GetAt(i))) && (is_vowel(syl.GetAt(i + 1)))))
-            res = true;
+    for (INTPTR i = 0; i < syl.GetLength()-1; i++) {
+        c = syl.GetAt(i);
+        n = syl.GetAt(i+1);
+        if (c == L'<' || c == L'?' || (is_vowel(c) && is_vowel(n) && c == n)) res = true;
     }
     return res;
 }
@@ -530,13 +584,27 @@ CFSWString word_to_syls(CFSWString word) {
 
     // varasema chars_to_phones_part_I asendus;
     s = sona_foneetiliseks(word);
+//    wprintf(L"\nFON_sona pikkus - %i IJ_sona: ", s.GetLength());
+//    for(i=0; i < s.GetLength(); i++) wprintf(L"%c", s.GetAt(i));
 
     s = sona_palataliseeri(s);
+//    wprintf(L"\nPALAT_sona pikkus - %i IJ_sona: ", s.GetLength());
+//    for(i=0; i < s.GetLength(); i++) wprintf(L"%c", s.GetAt(i));
 
     // varasema the_shift asendus
     s = sona_valtesta(s);
+//    wprintf(L"\nVALDE_sona pikkus - %i IJ_sona: ", s.GetLength());
+//    for(i=0; i < s.GetLength(); i++) wprintf(L"%c", s.GetAt(i));
 
+    // osade pikkade foneemide teisendus
+    s = pikad_foneemid(s);
+//    wprintf(L"\nPIKFON_sona pikkus - %i IJ_sona: ", s.GetLength());
+//    for(i=0; i < s.GetLength(); i++) wprintf(L"%c", s.GetAt(i));
+
+    // sõnade silbitus
     s = sona_silbita(s);
+//    wprintf(L"\nSILP_sona pikkus - %i IJ_sona: ", s.GetLength());
+//    for(i=0; i < s.GetLength(); i++) wprintf(L"%c", s.GetAt(i));
 
     // ij-eelne palatalisatsioon lisatud
     s = ij_palataliseeri(s);
@@ -570,7 +638,7 @@ void TUtterance::DoSyls(TWord& TW) {
     for (INTPTR cw = 0; cw < c_words.GetSize(); cw++) {
 
         s = word_to_syls(c_words[cw]);
-
+//        PP.prnn(L"DoSyls: " + s);
         explode(s, d, temp_arr);
         TSA_temp.Cleanup();
         for (INTPTR i = 0; i < temp_arr.GetSize(); i++) {
@@ -654,13 +722,13 @@ void TUtterance::DoSyls(TWord& TW) {
                                 T.Syl.SetAt(slpp-1, 0);
  //                               wprintf(L"Silbi pikkus = %i\n", slpp);
                             }
-                            /*
+
                             // Pööran välte tagasi õigeks
                             if (T.DoQ == 1) {
                                 T.DoQ = 0;
                                 TW.TSA[TW.TSA.GetSize() - 1].DoQ = 1;
                             }
-                            */
+
                         }
                     }
                 } // KPTlõpp Kiisselil
@@ -677,7 +745,7 @@ void TUtterance::DoSyls(TWord& TW) {
                         }
                         if (IsKPT(C) && IsVoiced(P)) TW.TSA[TW.TSA.GetSize() - 1].Syl = TW.TSA[TW.TSA.GetSize() - 1].Syl + C;
                     }
-                } // kpt lõpp
+                } // kpt lõpp minu lisatud
 
                 if (C == L"j" && P == L"j" ) {
                     TPrev.Syl[TPrev.Syl.GetLength()-1] = L'i';

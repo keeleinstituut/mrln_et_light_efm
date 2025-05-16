@@ -1,0 +1,76 @@
+2025-05-13 12:03:02,683     INFO           main: Installation information:
+2025-05-13 12:03:02,683     INFO           main:   Merlin directory: /home/meelis/merlin
+2025-05-13 12:03:02,683     INFO           main:   PATH:
+2025-05-13 12:03:02,683     INFO           main:       /home/meelis/anaconda3/envs/mrln_et/lib
+2025-05-13 12:03:02,683     INFO           main:       /home/meelis/anaconda3/envs/mrln_et/bin
+2025-05-13 12:03:02,683     INFO           main:       /home/meelis/anaconda3/condabin
+2025-05-13 12:03:02,683     INFO           main:       /usr/local/sbin
+2025-05-13 12:03:02,683     INFO           main:       /usr/local/bin
+2025-05-13 12:03:02,683     INFO           main:       /usr/sbin
+2025-05-13 12:03:02,683     INFO           main:       /usr/bin
+2025-05-13 12:03:02,683     INFO           main:       /sbin
+2025-05-13 12:03:02,683     INFO           main:       /bin
+2025-05-13 12:03:02,683     INFO           main:       /usr/games
+2025-05-13 12:03:02,683     INFO           main:       /usr/local/games
+2025-05-13 12:03:02,683     INFO           main:       /snap/bin
+2025-05-13 12:03:02,683     INFO           main:   LD_LIBRARY_PATH:
+2025-05-13 12:03:02,683     INFO           main:   Python version: 3.6.8 |Anaconda, Inc.| (default, Dec 30 2018, 01:22:34) [GCC 7.3.0]
+2025-05-13 12:03:02,683     INFO           main:     PYTHONPATH:
+2025-05-13 12:03:02,684     INFO           main:   Numpy version: 1.19.5
+2025-05-13 12:03:02,684     INFO           main:   Theano version: 1.0.5
+2025-05-13 12:03:02,684     INFO           main:     THEANO_FLAGS: device=cuda,floatX=float32,on_unused_input=ignore
+2025-05-13 12:03:02,684     INFO           main:     device: cuda
+2025-05-13 12:03:02,687     INFO           main: Execution information:
+2025-05-13 12:03:02,690     INFO           main:   HOSTNAME: fu.eki.ee
+2025-05-13 12:03:02,690     INFO           main:   USER: meelis
+2025-05-13 12:03:02,690     INFO           main:   PID: 3116
+2025-05-13 12:03:02,715     INFO           main: Input label dimension is 369
+2025-05-13 12:03:02,717     INFO           main: preparing label data (input) using standard HTS style labels
+2025-05-13 12:03:02,719     INFO         labels: loaded /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/gen-lab/temp00.lab,  30 labels
+2025-05-13 12:03:02,719     INFO         labels: loaded /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/gen-lab/temp01.lab,  35 labels
+2025-05-13 12:03:02,719     INFO         labels: loaded /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/gen-lab/temp02.lab,  35 labels
+2025-05-13 12:03:02,719     INFO         labels: loaded /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/gen-lab/temp05.lab,  30 labels
+2025-05-13 12:03:02,720     INFO         labels: loaded /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/gen-lab/temp03.lab,  35 labels
+2025-05-13 12:03:02,720     INFO         labels: loaded /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/gen-lab/temp04.lab,  30 labels
+2025-05-13 12:03:02,720     INFO         labels: loaded /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/gen-lab/temp06.lab,  35 labels
+2025-05-13 12:03:02,722     INFO         labels: loaded /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/gen-lab/temp07.lab,  30 labels
+2025-05-13 12:03:02,771     INFO         labels: loaded /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/gen-lab/temp08.lab,  30 labels
+2025-05-13 12:03:02,773     INFO         labels: loaded /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/gen-lab/temp09.lab,  30 labels
+2025-05-13 12:03:02,785     INFO         labels: loaded /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/gen-lab/temp10.lab,  30 labels
+2025-05-13 12:03:03,024     INFO  acoustic_norm: Loaded min max values from the trained data for feature dimension of 369
+2025-05-13 12:03:03,055     INFO           main: label dimension is 369
+2025-05-13 12:03:03,055     INFO           main: generating from DNN
+2025-05-13 12:03:03,090     INFO dnn_generation: generating    1 of   11: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/wav/temp00.lab
+2025-05-13 12:03:04,145     INFO dnn_generation: generating    2 of   11: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/wav/temp01.lab
+2025-05-13 12:03:04,220     INFO dnn_generation: generating    3 of   11: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/wav/temp02.lab
+2025-05-13 12:03:04,337     INFO dnn_generation: generating    4 of   11: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/wav/temp03.lab
+2025-05-13 12:03:04,414     INFO dnn_generation: generating    5 of   11: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/wav/temp04.lab
+2025-05-13 12:03:04,488     INFO dnn_generation: generating    6 of   11: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/wav/temp05.lab
+2025-05-13 12:03:04,559     INFO dnn_generation: generating    7 of   11: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/wav/temp06.lab
+2025-05-13 12:03:04,633     INFO dnn_generation: generating    8 of   11: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/wav/temp07.lab
+2025-05-13 12:03:04,707     INFO dnn_generation: generating    9 of   11: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/wav/temp08.lab
+2025-05-13 12:03:04,781     INFO dnn_generation: generating   10 of   11: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/wav/temp09.lab
+2025-05-13 12:03:04,855     INFO dnn_generation: generating   11 of   11: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/wav/temp10.lab
+2025-05-13 12:03:04,967     INFOparam_generation: processing    1 of   11: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/wav/temp00.cmp
+2025-05-13 12:03:04,973     INFOparam_generation: processing    2 of   11: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/wav/temp01.cmp
+2025-05-13 12:03:04,980     INFOparam_generation: processing    3 of   11: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/wav/temp02.cmp
+2025-05-13 12:03:04,986     INFOparam_generation: processing    4 of   11: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/wav/temp03.cmp
+2025-05-13 12:03:04,993     INFOparam_generation: processing    5 of   11: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/wav/temp04.cmp
+2025-05-13 12:03:04,999     INFOparam_generation: processing    6 of   11: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/wav/temp05.cmp
+2025-05-13 12:03:05,005     INFOparam_generation: processing    7 of   11: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/wav/temp06.cmp
+2025-05-13 12:03:05,012     INFOparam_generation: processing    8 of   11: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/wav/temp07.cmp
+2025-05-13 12:03:05,018     INFOparam_generation: processing    9 of   11: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/wav/temp08.cmp
+2025-05-13 12:03:05,024     INFOparam_generation: processing   10 of   11: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/wav/temp09.cmp
+2025-05-13 12:03:05,030     INFOparam_generation: processing   11 of   11: /home/meelis/merlin/egs/build_your_own_voice/s1/experiments/eva_laused/test_synthesis/wav/temp10.cmp
+2025-05-13 12:03:05,037     INFO           main: reconstructing waveform(s)
+2025-05-13 12:03:05,037     INFO wav_generation: creating waveform for    1 of   11: temp00
+2025-05-13 12:03:05,465     INFO wav_generation: creating waveform for    2 of   11: temp01
+2025-05-13 12:03:05,908     INFO wav_generation: creating waveform for    3 of   11: temp02
+2025-05-13 12:03:06,414     INFO wav_generation: creating waveform for    4 of   11: temp03
+2025-05-13 12:03:06,901     INFO wav_generation: creating waveform for    5 of   11: temp04
+2025-05-13 12:03:07,347     INFO wav_generation: creating waveform for    6 of   11: temp05
+2025-05-13 12:03:07,764     INFO wav_generation: creating waveform for    7 of   11: temp06
+2025-05-13 12:03:08,224     INFO wav_generation: creating waveform for    8 of   11: temp07
+2025-05-13 12:03:08,661     INFO wav_generation: creating waveform for    9 of   11: temp08
+2025-05-13 12:03:09,102     INFO wav_generation: creating waveform for   10 of   11: temp09
+2025-05-13 12:03:09,551     INFO wav_generation: creating waveform for   11 of   11: temp10
