@@ -48,4 +48,4 @@ vaata näidet failis `mrln.sh`
 
 `efm_s` - sünteesib üksiksõnu
  
-`efm_s` - sünteesib lauseid
+`efm_l` - sünteesib lauseid
