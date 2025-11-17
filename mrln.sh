@@ -7,7 +7,7 @@
 
 merlin_dir=$(pwd)
 temp_dir=/home/meelis/mrln_et_light_efm/temp
-voice=efm_s_um
+voice=efm_s
 in_text=/home/meelis/mrln_et_light_efm/ins.txt
 out_wav=/home/meelis/mrln_et_light_efm/efm_s_out_ins.wav
 
