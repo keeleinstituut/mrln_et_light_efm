@@ -1,8 +1,12 @@
-# Merlinil põhinevad eesti keele kõnesüntesaatorid üksiksõnadele ja lausetele
+# Merlinil põhinev eesti keele kõnesüntesaator üksiksõnadele
 
-süntesaatorid arvestavad tekstis foneetilisi märke: 
+süntesaator arvestavad tekstis foneetilisi märke: 
 
-'<' - kolmandavälteline silp, ']' - palatalisatsioon, '?' - rõhuline silp, '_' - liitsõnapiir
+'<' - kolmandavälteline silp, ']' - palatalisatsioon, '?' - pearõhuline silp, '_' - liitsõnapiir
+
+rakendatud on uusi märgenduspõhimõtteid:
+
+kolmandavälteline silp ei pruugi olla pearõhuline (marmel<aad vs mehhan?<ism) 
 
 ===========================================================================
 
@@ -44,8 +48,7 @@ python ${merlin_dir}/src/run_merlin.py ${merlin_dir} ${temp_dir} ${voice} ${in_t
 ```
 vaata näidet failis `mrln.sh`
 
-- Sünteeshääled  on `voices/` kataloogis
+- Sünteeshääl  on `voices/` kataloogis
 
-`efm_s` - sünteesib üksiksõnu
+`efm_s_um` - sünteesib üksiksõnu
  
-`efm_l` - sünteesib lauseid
