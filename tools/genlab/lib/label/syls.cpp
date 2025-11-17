@@ -2,7 +2,6 @@
 #include "../etana/proof.h"
 #include "util.h"
 
-// uus märgendus + aktsenti arvestatakse!!!
 
 bool print_syls = false;
 
@@ -190,7 +189,7 @@ CFSWString sona_foneetiliseks(CFSWString &s) {
             } else
                 res += L"k";
         } else
-            // müüa -> müija
+            // müüa -> müia
             if (c == L'ü' && (is_vowel(s.GetAt(i + 1)) || s.GetAt(i + 1) == L'j') && s.GetAt(i - 1) == L'ü') res += L"i";
         else
             if (c == L'q') {
@@ -477,7 +476,7 @@ bool is_stressed_syl(CFSWString syl) {
 }
 
 bool IsKPT(CFSWString s) {
-    if (s.FindOneOf(L"kptfšT")>-1) return true;
+    if (s.FindOneOf(L"kptšT")>-1) return true;
     return false;
 }
 
@@ -494,27 +493,6 @@ CFSWString ToGBD(CFSWString s) {
         if (s == L"t") return L"d";
     else
         return s;
-}
-
-CFSWString kond(CFSWString s) {
-
-    CFSWString res;
-    CFSWString c;
-
-    res = s.GetAt(0);
-
-    for (INTPTR i = 1; i < s.GetLength(); i++) {
-        c = s.GetAt(i);
-        if (i > 1) {
-            if (c == L'k') {
-                if ((s.GetAt(i+1) == L'<' && s.GetAt(i+2) == L'o' && s.GetAt(i+3) == L'n' && s.GetAt(i+4) == L'd') || 
-                    (s.GetAt(i+1) == L'o' && s.GetAt(i+2) == L'n' && s.GetAt(i+3) == L'n' && s.GetAt(i+4) == L'a')) res += L'_';
-            }
-        }
-
-        res += c;
-    }
-    return res;
 }
 
 void AddStress(CFSClassArray<TSyl> &sv, INTPTR wp) {
@@ -536,57 +514,67 @@ void AddStress(CFSClassArray<TSyl> &sv, INTPTR wp) {
 
     bool main_applied = false;
 
-    // ühesilbiline sona
-
+    // ühesilbiline
     if (size == 1) {
+
+        sv[0].Syl.Remove(L'<');
+
         sv[0].Stress = main_stress;
-	if (sv[0].Syl.Find('<') > -1) {
-	    sv[0].Syl.Remove(L'<');
-            sv[0].DoQ = 1;
-	}
-    }
 
-    else {
- 
+        sv[0].DoQ = 0;
+
+    } else {
+        // paneme varasema teadmise järgi algväärtused
+        // teadmine on silpidesse jäänud < ja ? ja pika vokaali/diftongiga
+
         // pearõhk on seal, kus ? (ühtlasi koristame)
-
         for (INTPTR i = 0; i < size; i++) {
+
+            // liitsõna esimese klusiili parandus
+
+
+            // eksperimendi korras topeldame pikeneva, aga järgmisesse silpi sattunud laa-t:a -> laat-t:ta
+          //  if (i > 0 && sv[i].Syl.GetAt(1) == L':') {
+          //      CFSWString c = sv[i].Syl.GetAt(0);
+          //      sv[i - 1].Syl += c;
+          //  }
 
             if (sv[i].Syl.Find('?') > -1) {
                 sv[i].Stress = main_stress;
                 main_applied = true;
                 sv[i].Syl.Remove(L'?');
             }
+        }
 
-        // aktsent seal, kus < (ühtlasi koristame)
-
-	    if (sv[i].Syl.Find('<') > -1) {
-                sv[i].DoQ = 1;
+        // või siis seal, kus < (ühtlasi koristame)
+        for (INTPTR i = 0; i < size; i++) {
+            if (sv[i].Stress > 0) continue; // tsivilisatsi?ooni on is_stressed ja saab muidu uue rõhu
+            if (is_stressed_syl(sv[i].Syl)) {
                 sv[i].Syl.Remove(L'<');
+                if (main_applied) {
+                    sv[i].Stress = stress;
+                } else {
+                    sv[i].Stress = main_stress;
+                    main_applied = true;
+                }
             }
+        }
 
-	}
-
-        // pearõhk siis esisilbil, kui polnud ühtki ?
-
-        if (main_applied == false) sv[0].Stress = main_stress;
+        // või siis esisilbil, kui polnud ühtki nähtavalt rõhulist
+        if (main_applied == false)
+            sv[0].Stress = main_stress;
 
         // kui sõna algusesse jäi rõhutamata silpe, siis rõhutame paarituid
-
-		for (INTPTR i = 0; i < size - 1; i += 2) {
-                    if ((sv[i].Stress == 0) && (sv[i + 1].Stress == 0)) {
-                        sv[i].Stress = stress;
-                    } 
-		    else break;
-		}
+        for (INTPTR i = 0; i < size - 1; i += 2)
+            if ((sv[i].Stress == 0) && (sv[i + 1].Stress == 0)) {
+                sv[i].Stress = stress;
+            } else break;
 
         // täidame augud (kolm järjestikust rõhutut silpi)
-
-		for (INTPTR i = 0; i < size - 2; i++) {
-                    if ((sv[i].Stress == 0) && (sv[i + 1].Stress == 0) && (sv[i + 2].Stress == 0)) {
-                        sv[i + 1].Stress = stress;
-                    }
-		}
+        for (INTPTR i = 0; i < size - 2; i++)
+            if ((sv[i].Stress == 0) && (sv[i + 1].Stress == 0) && (sv[i + 2].Stress == 0)) {
+                sv[i + 1].Stress = stress;
+            }
     }
 }
 
@@ -595,9 +583,6 @@ CFSWString word_to_syls(CFSWString word) {
     int i;
 
     // varasema chars_to_phones_part_I asendus;
-//    wprintf(L"\nSisend_sona pikkus - %i IJ_sona: ", word.GetLength());
-//    for(i=0; i < word.GetLength(); i++) wprintf(L"%c", word.GetAt(i));
-
     s = sona_foneetiliseks(word);
 //    wprintf(L"\nFON_sona pikkus - %i IJ_sona: ", s.GetLength());
 //    for(i=0; i < s.GetLength(); i++) wprintf(L"%c", s.GetAt(i));
@@ -642,39 +627,30 @@ void TUtterance::DoSyls(TWord& TW) {
     CFSClassArray<TSyl> TSA;
     CFSClassArray<TSyl> TSA_temp;
 
-    CFSWString s;
     INTPTR k, klas, slpp;
 
     //Kuna siin tulevad DLNST märgentitena siis:
     TW.TWMInfo.m_szRoot = TW.TWMInfo.m_szRoot.ToLower();
 
-    s = TW.TWMInfo.m_szRoot;
+    explode(TW.TWMInfo.m_szRoot, L"_", c_words);
+    CFSWString s;
 
-    s= kond(s); // kond-liide liitsõnaks
+    for (INTPTR cw = 0; cw < c_words.GetSize(); cw++) {
 
-//    PP.prnn(L"Peale kond: " + s);
-
-    explode(s, L"_", c_words);
-
-    for (INTPTR cw = 0; cw < c_words.GetSize(); cw++) {  // sona kaupa
-
-        s = word_to_syls(c_words[cw]);  // sona silpideks
-
+        s = word_to_syls(c_words[cw]);
 //        PP.prnn(L"DoSyls: " + s);
-
         explode(s, d, temp_arr);
         TSA_temp.Cleanup();
-
-        for (INTPTR i = 0; i < temp_arr.GetSize(); i++) {  // silbi kaupa
+        for (INTPTR i = 0; i < temp_arr.GetSize(); i++) {
             TSyl T;
             T.Syl = temp_arr[i];
             T.Stress = 0;
-            T.DoQ = 0;
             //T.DoPhones(T);
             TSA_temp.AddItem(T);
+
         }
 
-        AddStress(TSA_temp, cw);  // silbid saavad rohu
+        AddStress(TSA_temp, cw);
 
 //        for (int x = 0; x < TSA_temp.GetSize(); x ++ ) {
 //            PP.prnn(L"peale Addstress "+TSA_temp[x].Syl);
@@ -682,22 +658,25 @@ void TUtterance::DoSyls(TWord& TW) {
 
         INTPTR size = TSA_temp.GetSize();
 
+
         for (INTPTR j = 0; j < size; j++) {
             TSyl T = TSA_temp[j];
+//            PP.prn(T.Syl);
+//            PP.prn(TW.TWMInfo.m_cPOS);
+//            PP.prni(T.Stress);
+//            PP.prni(T.DoQ);
+//            PP.prnn();
+//            PP.prnn(T.Syl);
+            if (T.Syl.Find(L":", 0) > -1) {
+                T.DoQ = 1;
+                //T.Syl.Remove(L':');
+				//T.Syl = T.Syl + L"w";
 
-//	wprintf(L"\n%i. stress = %i   aksent = %i ", j, T.Stress, T.DoQ);
+            }
 
-//            if (T.Syl.Find(L":", 0) > -1) {
-//                T.DoQ = 1;
-//T.Syl.Remove(L':');
-//T.Syl = T.Syl + L"w";
-
-//            }
-
-/*            if (size == 1) {   // selle if-i mõttekus ei tundunud oluline
-//		PP.prnn(L"Silp: " + T.Syl);
-                wprintf(L"\nSilp %c%c - silbi pikkus - %i ", T.Syl.GetAt(0), T.Syl.GetAt(1), T.Syl.GetLength());
-                if (TW.TWMInfo.m_cPOS == L'J' || T.Syl == L"ei" || T.Syl == L"on" || T.Syl.GetLength() < 4) {
+            if (size == 1) {
+                if (TW.TWMInfo.m_cPOS == L'J' || T.Syl == L"ei" ||
+                        T.Syl == L"on" || T.Syl.GetLength() < 4) {
 
                     if (cw == 0) {
                         T.DoQ = 0;
@@ -709,29 +688,26 @@ void TUtterance::DoSyls(TWord& TW) {
                 }
             }
 
-            else {
-*/
+            else
+
                 if (j > 0) { //Mitmesilbilise esimest ei vaata, ainult järgnevaid
 
 
-                    CFSWString P, C, N;
+                CFSWString P, C, N;
 
 
-                    TSyl TPrev = TW.TSA[TW.TSA.GetSize() - 1];
+                TSyl TPrev = TW.TSA[TW.TSA.GetSize() - 1];
 
-                    P = TPrev.Syl.GetAt(TPrev.Syl.GetLength() - 1);
-                    C = T.Syl.GetAt(0);
-                    N = T.Syl.GetAt(1);
+                P = TPrev.Syl.GetAt(TPrev.Syl.GetLength() - 1);
+                C = T.Syl.GetAt(0);
+                N = T.Syl.GetAt(1);
 
-//             wprintf(L"\tSilbipiir: %c-%c%c aktsent: %i\t", P.GetAt(0), C.GetAt(0), N.GetAt(0), TW.TSA[TW.TSA.GetSize() - 1].DoQ);
+  //             wprintf(L"\tSilbipiir: %c-%c%c\t", P.GetAt(0), C.GetAt(0), N.GetAt(0));
 
-                    if (IsKPT(T.Syl.GetAt(0))) {
-                        if (is_koolon(P)) {
-                            P = TPrev.Syl.GetAt(TPrev.Syl.GetLength() - 2);
-//                            wprintf(L"KPTSaa: %c%c%c\n", P.GetAt(0), C.GetAt(0), N.GetAt(0));
-                        }
-                        if (IsVoiced(P) && IsVoiced(N)) {
-//                            if (TW.TSA[TW.TSA.GetSize() - 1].DoQ == 0) {
+                if (IsKPT(T.Syl.GetAt(0))) {
+  //                  wprintf(L"KPTSaa: %c%c%c\n", P.GetAt(0), C.GetAt(0), N.GetAt(0));
+                    if (IsVoiced(P) && IsVoiced(N)) {
+                        if (TW.TSA[TW.TSA.GetSize() - 1].DoQ == 0) {
                             TW.TSA[TW.TSA.GetSize() - 1].Syl = TW.TSA[TW.TSA.GetSize() - 1].Syl + C;
                             if (is_koolon(N)) {
                                 TW.TSA[TW.TSA.GetSize() - 1].Syl = TW.TSA[TW.TSA.GetSize() - 1].Syl + L":";
@@ -742,47 +718,56 @@ void TUtterance::DoSyls(TWord& TW) {
                                         break;
                                     }
                                 }
-                                for (k = klas; k < slpp-1; k++) {
-                                    T.Syl.SetAt(k, T.Syl.GetAt(k+1));
-                                }
+                                for (k = klas; k < slpp-1; k++) T.Syl.SetAt(k, T.Syl.GetAt(k+1));
                                 T.Syl.SetAt(slpp-1, 0);
-//                              wprintf(L"Silbi pikkus = %i\n", slpp);
+ //                               wprintf(L"Silbi pikkus = %i\n", slpp);
                             }
 
                             // Pööran välte tagasi õigeks
-//                           if (T.DoQ == 1) {
-//                               T.DoQ = 0;
-//                               TW.TSA[TW.TSA.GetSize() - 1].DoQ = 1;
-//                           }
+                            if (T.DoQ == 1) {
+                                T.DoQ = 0;
+                                TW.TSA[TW.TSA.GetSize() - 1].DoQ = 1;
+                            }
 
                         }
-                    } // KPTlõpp Kiisselil
-
-                    else { // lisatud, et kopli => kop:p-li, putru => put:t-ru
-                        if (IsVoiced(C)) {
-                            if (is_koolon(P)) {
-                                C = TPrev.Syl.GetAt(TPrev.Syl.GetLength() - 2);
-                                P = TPrev.Syl.GetAt(TPrev.Syl.GetLength() - 3);
-                            }
-                            else {
-                                C = P;
-                                P = TPrev.Syl.GetAt(TPrev.Syl.GetLength() - 2);
-                                if (is_koolon(P)) P = TPrev.Syl.GetAt(TPrev.Syl.GetLength() - 3);
-                            }
-                            if (IsKPT(C) && IsVoiced(P)) TW.TSA[TW.TSA.GetSize() - 1].Syl = TW.TSA[TW.TSA.GetSize() - 1].Syl + C;
-                        }
-//                    wprintf(L"\tMinu_kpt: %c-%c%c\t", P.GetAt(0), C.GetAt(0), N.GetAt(0));
-
-                    } // kpt lõpp minu lisatud
-
-
-                    if (C == L"j" && P == L"j" ) {
-                        TPrev.Syl[TPrev.Syl.GetLength()-1] = L'i';
-                        TW.TSA[TW.TSA.GetSize() - 1] = TPrev;
                     }
+                } // KPTlõpp Kiisselil
+
+                else { // lisatud, et kopli => kop:p-li, putru => put:t-ru
+                    if (IsVoiced(C)) {
+                        if (is_koolon(P)) {
+                            C = TPrev.Syl.GetAt(TPrev.Syl.GetLength() - 2);
+                            P = TPrev.Syl.GetAt(TPrev.Syl.GetLength() - 3);
+                        }
+                        else {
+                            C = P;
+                            P = TPrev.Syl.GetAt(TPrev.Syl.GetLength() - 2);
+                        }
+                        if (IsKPT(C) && IsVoiced(P)) TW.TSA[TW.TSA.GetSize() - 1].Syl = TW.TSA[TW.TSA.GetSize() - 1].Syl + C;
+                    }
+                } // kpt lõpp minu lisatud
+
+                if (C == L"j" && P == L"j" ) {
+                    TPrev.Syl[TPrev.Syl.GetLength()-1] = L'i';
+                    TW.TSA[TW.TSA.GetSize() - 1] = TPrev;
                 }
 
-//            }   else lopp, mis jäi välja
+                if ( P == L"i" && C == L"j" && N == L"a" && T.DoQ == 1) {
+   //                 PP.prnn(L"\t[" + P + L" " + C + L" " + N + L"] " + TPrev.Syl + L" " + T.Syl);
+                    T.DoQ = 0;
+                    TW.TSA[TW.TSA.GetSize() - 1].DoQ = 1;
+
+                }
+
+            }
+
+
+ //           PP.prn(T.Syl);
+ //           PP.prn(TW.TWMInfo.m_cPOS);
+ //           PP.prni(T.Stress);
+ //           PP.prni(T.DoQ);
+ //           PP.prnn();
+
 
             TW.TSA.AddItem(T);
         }
@@ -790,14 +775,21 @@ void TUtterance::DoSyls(TWord& TW) {
     }
 
 
-    TW.e2 = TW.TSA.GetSize();
 
+    TW.e2 = TW.TSA.GetSize();
     // Välde on ikka silbi, mitte foneemi omadus :)
 
     for (INTPTR i = 0; i < TW.TSA.GetSize(); i++) {
 
+        //PP.pr(TW.TSA[i].Syl);
+        //PP.prni(TW.TSA[i].Stress);
+        //PP.prni(TW.TSA[i].DoQ);
+
+
         TW.TSA[i].DoPhones(TW.TSA[i]);
     }
 
+    //PP.prnn();
+    //PP.prnn();
 }
 
