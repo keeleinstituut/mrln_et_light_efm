@@ -338,7 +338,7 @@ public:
     
     void AnalyzeText() {
         TWA = DoTokens(TWA);
-//        TWA = DoNumbers(TWA);
+        TWA = DoNumbers(TWA);
     }
     /*Sõnad silpideks ja silbid foneemideks*/
     void Syllabify() {
