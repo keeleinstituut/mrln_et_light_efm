@@ -2,7 +2,7 @@
 #include "../etana/proof.h"
 #include "util.h"
 
-
+//
 bool print_syls = false;
 
 struct pattern_struct {
