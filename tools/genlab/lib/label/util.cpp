@@ -1,7 +1,7 @@
 #include <iostream>
 #include "../etana/proof.h"
 #include "util.h"
-
+// lyhendid parandatud
 //Printer PR;
 
 bool is_lvowel (CFSWString c) {
