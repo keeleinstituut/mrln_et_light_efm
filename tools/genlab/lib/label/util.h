@@ -1,5 +1,5 @@
 #include "../etana/proof.h"
-// päis 
+// pais 
 
 struct phone_struct {
     CFSWString phone;
