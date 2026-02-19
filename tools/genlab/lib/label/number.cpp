@@ -63,15 +63,15 @@ CFSWString IntToStr(CFSWString numStr, bool Ordinal, INTPTR decl, bool Sg) {
 	numStr = make_digit_string(numStr);
 
 	CFSWString onesNimetav[] = {
-		L"<üks", L"k<aks", L"k<olm", L"neli", L"v<iis", L"k<uus", L"seitse", L"kaheksa", L"üheksa"
+		L"üks", L"kaks", L"kolm", L"neli", L"viis", L"kuus", L"seitse", L"kaheksa", L"üheksa"
 	};
 
 	CFSWString teensNimetav[] = {
-		L"kümme", L"<üks_t<eist", L"k<aks_t<eist", L"k<olm_t<eist", L"neli_t<eist", L"v<iis_t<eist", L"k<uus_t<eist", L"seitse_t<eist", L"kaheksa_t<eist", L"üheksa_t<eist"
+		L"kümme", L"üksteist", L"kaksteist", L"kolmteist", L"neliteist", L"viisteist", L"kuusteist", L"seitseteist", L"kaheksateist", L"üheksateist"
 	};
 
 	CFSWString tensNimetav[] = {
-		L"k<aks_kümmend", L"k<olm_kümmend", L"neli_kümmend", L"v<iis_kümmend", L"k<uus_kümmend", L"seitse_kümmend", L"kaheksa_kümmend", L"üheksa_kümmend"
+		L"kakskümmend", L"kolmkümmend", L"nelikümmend", L"viiskümmend", L"kuuskümmend", L"seitsekümmend", L"kaheksakümmend", L"üheksakümmend"
 	};
 
 
@@ -80,46 +80,46 @@ CFSWString IntToStr(CFSWString numStr, bool Ordinal, INTPTR decl, bool Sg) {
 	};
 
 	CFSWString teensOmastav[] = {
-		L"k<ümne", L"ühe_t<eist_k<ümne", L"kahe_t<eist_k<ümne", L"kolme_t<eist_k<ümne", L"nelja_t<eist_k<ümne",
-		L"viie_t<eist_k<ümne", L"kuue_t<eist_k<ümne", L"seitsme_t<eist_k<ümne", L"kaheksa_t<eist_k<ümne", L"üheksa_t<eist_k<ümne"
+		L"kümne", L"üheteistkümne", L"kaheteistkümne", L"kolmeteistkümne", L"neljateistkümne",
+		L"viieteistkümne", L"kuueteistkümne", L"seitsmeteistkümne", L"kaheksateistkümne", L"üheksateistkümne"
 	};
 
 	CFSWString tensOmastav[] = {
-		L"kahe_k<ümne", L"kolme_k<ümne", L"nelja_k<ümne", L"viie_k<ümne", L"kuue_k<ümne", L"seitsme_k<ümne", L"kaheksa_k<ümne", L"üheksa_k<ümne"
+		L"kahekümne", L"kolmekümne", L"neljakümne", L"viiekümne", L"kuuekümne", L"seitsmekümne", L"kaheksakümne", L"üheksakümne"
 	};
 
 	CFSWString onesNimetavJarg[] = {
-		L"esimene", L"teine", L"kolmas", L"neljas", L"viies", L"kuues", L"s<eitsmes", L"kaheksas", L"üheksas"
+		L"esimene", L"teine", L"kolmas", L"neljas", L"viies", L"kuues", L"seitsmes", L"kaheksas", L"üheksas"
 	};
 
 	CFSWString teensNimetavJarg[] = {
-		L"k<ümnes", L"ühe_t<eist_k<ümnes", L"kahe_t<eist_k<ümnes", L"kolme_t<eist_k<ümnes", L"nelja_t<eist_k<ümnes",
-		L"viie_t<eist_k<ümnes", L"kuue_t<eist_k<ümnes", L"seitsme_t<eist_k<ümnes", L"kaheksa_t<eist_k<ümnes", L"üheksa_t<eist_k<ümnes"
+		L"kümnes", L"üheteistkümnes", L"kaheteistkümnes", L"kolmeteistkümnes", L"neljateistkümnes",
+		L"viieteistkümnes", L"kuueteistkümnes", L"seitsmeteistkümnes", L"kaheksateistkümnes", L"üheksateistkümnes"
 	};
 	CFSWString tensNimetavJarg[] = {
-		L"kahe_k<ümnes", L"kolme_k<ümnes", L"nelja_k<ümnes", L"viie_k<ümnes", L"kuue_k<ümnes", L"seitsme_k<ümnes", L"kaheksa_k<ümnes", L"üheksa_k<ümnes"
+		L"kahekümnes", L"kolmekümnes", L"neljakümnes", L"viiekümnes", L"kuuekümnes", L"seitsmekümnes", L"kaheksakümnes", L"üheksakümnes"
 	};
 
 	CFSWString onesOmastavJarg[] = {
-		L"esimese", L"teise", L"kolmanda", L"neljanda", L"viienda", L"kuuenda", L"s<eitsmenda", L"kaheksanda", L"üheksanda",
+		L"esimese", L"teise", L"kolmanda", L"neljanda", L"viienda", L"kuuenda", L"seitsmenda", L"kaheksanda", L"üheksanda",
 	};
 	CFSWString teensOmastavJarg[] = {
-		L"k<ümnenda", L"ühe_t<eist_k<ümnenda", L"kahe_t<eist_k<ümnenda", L"kolme_t<eist_k<ümnenda", L"nelja_t<eist_k<ümnenda",
-		L"viie_t<eist_k<ümnenda", L"kuue_t<eist_k<ümnenda", L"seitsme_t<eist_k<ümnenda", L"kaheksa_t<eist_k<ümnenda", L"üheksa_t<eist_k<ümnenda"
+		L"kümnenda", L"üheteistkümnenda", L"kaheteistkümnenda", L"kolmeteistkümnenda", L"neljateistkümnenda",
+		L"viieteistkümnenda", L"kuueteistkümnenda", L"seitsmeteistkümnenda", L"kaheksateistkümnenda", L"üheksateistkümnenda"
 	};
 	CFSWString tensOmastavJarg[] = {
-		L"kahe_k<ümnenda", L"kolme_k<ümnenda", L"nelja_k<ümnenda", L"viie_k<ümnenda", L"kuue_k<ümnenda", L"seitsme_k<ümnenda", L"kaheksa_k<ümnenda", L"üheksa_k<ümnenda"
+		L"kahekümnenda", L"kolmekümnenda", L"neljakümnenda", L"viiekümnenda", L"kuuekümnenda", L"seitsmekümnenda", L"kaheksakümnenda", L"üheksakümnenda"
 	};
 
 	CFSWString onesOsastavJarg[] = {
-		L"esimest", L"t<eist", L"kolmandat", L"neljandat", L"v<iiendat", L"k<uuendat", L"s<eitsmendat", L"kaheksandat", L"üheksandat"
+		L"esimest", L"teist", L"kolmandat", L"neljandat", L"viiendat", L"kuuendat", L"seitsmendat", L"kaheksandat", L"üheksandat"
 	};
 	CFSWString teensOsastavJarg[] = {
-		L"k<ümnendat", L"ühe_t<eist_k<ümnendat", L"kahe_t<eist_k<ümnendat", L"kolme_t<eist_k<ümnendat", L"nelja_t<eist_k<ümnendat",
-		L"viie_t<eist_k<ümnendat", L"kuue_t<eist_k<ümnendat", L"seitsme_t<eist_k<ümnendat", L"kaheksa_t<eist_k<ümnendat", L"üheksa_t<eist_k<ümnendat"
+		L"kümnendat", L"üheteistkümnendat", L"kaheteistkümnendat", L"kolmeteistkümnendat", L"neljateistkümnendat",
+		L"viieteistkümnendat", L"kuueteistkümnendat", L"seitsmeteistkümnendat", L"kaheksateistkümnendat", L"üheksateistkümnendat"
 	};
 	CFSWString tensOsastavJarg[] = {
-		L"kahe_k<ümnendat", L"kolme_k<ümnendat", L"nelja_k<ümnendat", L"viie_k<ümnendat", L"kuue_k<ümnendat", L"seitsme_k<ümnendat", L"kaheksa_k<ümnendat", L"üheksa_k<ümnendat"
+		L"kahekümnendat", L"kolmekümnendat", L"neljakümnendat", L"viiekümnendat", L"kuuekümnendat", L"seitsmekümnendat", L"kaheksakümnendat", L"üheksakümnendat"
 	};
 
 
@@ -127,83 +127,83 @@ CFSWString IntToStr(CFSWString numStr, bool Ordinal, INTPTR decl, bool Sg) {
 
 	CFSWString onesNimetavPL[] = {
 		L"ühed", L"kahed", L"kolmed", L"neljad", L"viied", L"kuued",
-		L"s<eitsmed",
+		L"seitsmed",
 		L"kaheksad", L"üheksad"
 	};
 
 	CFSWString teensNimetavPL[] = {
-		L"k<ümned", L"ühe_t<eist_k<ümned", L"kahe_t<eist_k<ümned", L"kolme_t<eist_k<ümned",
-		L"nelja_t<eist_k<ümned",
-		L"viie_t<eist_k<ümned", L"kuue_t<eist_k<ümned", L"seitsme_t<eist_k<ümned",
-		L"kaheksa_t<eist_k<ümned",
-		L"üheksa_t<eist_k<ümned"
+		L"kümned", L"üheteistkümned", L"kaheteistkümned", L"kolmeteistkümned",
+		L"neljateistkümned",
+		L"viieteistkümned", L"kuueteistkümned", L"seitsmeteistkümned",
+		L"kaheksateistkümned",
+		L"üheksateistkümned"
 	};
 
 	CFSWString tensNimetavPL[] = {
-		L"kahe_k<ümned", L"kolme_k<ümned", L"nelja_k<ümned", L"viie_k<ümned",
-		L"kuue_k<ümned", L"seitsme_k<ümned", L"kaheksa_k<ümned",
-		L"üheksa_k<ümned"
+		L"kahekümned", L"kolmekümned", L"neljakümned", L"viiekümned",
+		L"kuuekümned", L"seitsmekümned", L"kaheksakümned",
+		L"üheksakümned"
 	};
 
 	CFSWString onesOmastavPL[] = {
-		L"<ühtede", L"k<ahtede", L"k<olmede", L"n<eljade", L"viite", L"kuute",
-		L"s<eitsmete",
+		L"ühtede", L"kahtede", L"kolmede", L"neljade", L"viite", L"kuute",
+		L"seitsmete",
 		L"kaheksate", L"üheksate",
 	};
 
 	CFSWString teensOmastavPL[] = {
-		L"k<ümnete", L"ühe_t<eist_k<ümnete", L"kahe_t<eist_k<ümnete",
-		L"kolme_t<eist_k<ümnete", L"nelja_t<eist_k<ümnete",
-		L"viie_t<eist_k<ümnete", L"kuue_t<eist_kümnete", L"seitsme_t<eist_k<ümnete",
-		L"kaheksa_t<eist_k<ümnete", L"üheksa_t<eist_k<ümnete"
+		L"kümnete", L"üheteistkümnete", L"kaheteistkümnete",
+		L"kolmeteistkümnete", L"neljateistkümnete",
+		L"viieteistkümnete", L"kuueteistkümnete", L"seitsmeteistkümnete",
+		L"kaheksateistkümnete", L"üheksateistkümnete"
 	};
 
 	CFSWString tensOmastavPL[] = {
-		L"kahe_k<ümnete", L"kolme_k<ümnete", L"nelja_k<ümnete", L"viie_k<ümnete",
-		L"kuue_k<ümnete", L"seitsme_k<ümnete", L"kaheksa_k<ümnete", L"üheksa_k<ümnete"
+		L"kahekümnete", L"kolmekümnete", L"neljakümnete", L"viiekümnete",
+		L"kuuekümnete", L"seitsmekümnete", L"kaheksakümnete", L"üheksakümnete"
 	};
 
 	CFSWString onesNimetavJargPL[] = {
 		L"esimesed", L"teised", L"kolmandad", L"neljandad", L"viiendad",
 		L"kuuendad",
-		L"s<eitsmendad", L"kaheksandad", L"üheksandad"
+		L"seitsmendad", L"kaheksandad", L"üheksandad"
 	};
 
 	CFSWString teensNimetavJargPL[] = {
-		L"k<ümnendad", L"ühe_t<eist_k<ümnendad", L"kahe_t<eist_k<ümnendad",
-		L"kolme_t<eist_k<ümnendad", L"nelja_t<eist_k<ümnendad",
-		L"viie_t<eist_k<ümnendad", L"kuue_t<eist_k<ümnendad", L"seitsme_t<eist_k<ümnendad",
-		L"kaheksa_t<eist_k<ümnendad", L"üheksa_t<eist_k<ümnendad"
+		L"kümnendad", L"üheteistkümnendad", L"kaheteistkümnendad",
+		L"kolmeteistkümnendad", L"neljateistkümnendad",
+		L"viieteistkümnendad", L"kuueteistkümnendad", L"seitsmeteistkümnendad",
+		L"kaheksateistkümnendad", L"üheksateistkümnendad"
 	};
 	CFSWString tensNimetavJargPL[] = {
-		L"kahe_k<ümnendad", L"kolme_k<ümnendad", L"nelja_k<ümnendad",
-		L"viie_k<ümnendad",
-		L"kuue_k<ümnendad", L"seitsme_k<ümnendad", L"kaheksa_k<ümnendad",
-		L"üheksa_k<ümnendad"
+		L"kahekümnendad", L"kolmekümnendad", L"neljakümnendad",
+		L"viiekümnendad",
+		L"kuuekümnendad", L"seitsmekümnendad", L"kaheksakümnendad",
+		L"üheksakümnendad"
 	};
 
 	CFSWString onesOmastavJargPL[] = {
 		L"esimeste", L"teiste", L"kolmandate", L"neljandate", L"viiendate",
-		L"kuuendate", L"s<eitsmendate", L"kaheksandate", L"üheksandate",
+		L"kuuendate", L"seitsmendate", L"kaheksandate", L"üheksandate",
 	};
 	CFSWString teensOmastavJargPL[] = {
-		L"k<ümnendate", L"ühe_t<eist_k<ümnendate", L"kahe_t<eist_k<ümnendate",
-		L"kolme_t<eist_k<ümnendate", L"nelja_t<eist_k<ümnendate",
-		L"viie_t<eist_k<ümnendate", L"kuue_t<eist_k<ümnendate",
-		L"seitsme_t<eist_k<ümnendate", L"kaheksa_t<eist_k<ümnendate",
-		L"üheksa_t<eist_k<ümnendate"
+		L"kümnendate", L"üheteistkümnendate", L"kaheteistkümnendate",
+		L"kolmeteistkümnendate", L"neljateistkümnendate",
+		L"viieteistkümnendate", L"kuueteistkümnendate",
+		L"seitsmeteistkümnendate", L"kaheksateistkümnendate",
+		L"üheksateistkümnendate"
 	};
 	CFSWString tensOmastavJargPL[] = {
-		L"kahe_k<ümnendate", L"kolme_k<ümnendate", L"nelja_k<ümnendate",
-		L"viie_k<ümnendate", L"kuue_k<ümnendate", L"seitsme_k<ümnendate",
-		L"kaheksa_k<ümnendate", L"üheksa_k<ümnendate"
+		L"kahekümnendate", L"kolmekümnendate", L"neljakümnendate",
+		L"viiekümnendate", L"kuuekümnendate", L"seitsmekümnendate",
+		L"kaheksakümnendate", L"üheksakümnendate"
 	};
 
 
 
 
-	CFSWString illion_preName[] = {L"m", L"b", L"tr", L"kvadr", L"kv<int", L"s<ekst", L"s<ept", L"<okt", L"non", L"d<ets"};
-	CFSWString decillion_preName[] = {L"un", L"duo", L"tre", L"kvattuor", L"kv<in", L"s<eks", L"septen", L"okto", L"novem"};
+	CFSWString illion_preName[] = {L"m", L"b", L"tr", L"kvadr", L"kvint", L"sekst", L"sept", L"okt", L"non", L"dets"};
+	CFSWString decillion_preName[] = {L"un", L"duo", L"tre", L"kvattuor", L"kvin", L"seks", L"septen", L"okto", L"novem"};
 
 
 
@@ -273,7 +273,7 @@ CFSWString IntToStr(CFSWString numStr, bool Ordinal, INTPTR decl, bool Sg) {
 
 
 	while (numStr.GetAt(0) == L'0') {
-		rs += L"n<ul]l ";
+		rs += L"null ";
 		numStr.Delete(0,1);
 	}
 	
