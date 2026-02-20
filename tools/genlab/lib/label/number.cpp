@@ -5,7 +5,7 @@
 #include "../etana/proof.h"
 #include "util.h"
 
-
+// numbrid fm
 
 int value(char r) 
 { 

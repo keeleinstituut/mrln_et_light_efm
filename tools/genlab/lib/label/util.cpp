@@ -1,8 +1,8 @@
 #include <iostream>
 #include "../etana/proof.h"
 #include "util.h"
+
 // lyhendid parandatud
-//Printer PR;
 
 bool is_lvowel (CFSWString c) {
 	if (c.FindOneOf(L"aeiouõäöüy") > -1)	return true;

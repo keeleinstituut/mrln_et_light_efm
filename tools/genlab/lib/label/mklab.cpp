@@ -7,6 +7,8 @@
 #include "syls.h"
 #include "label.h"
 
+// nb, em, lyh tootlus efm-ile
+
 Printer P;
 
 CFSWString DealWithText(CFSWString text) {
